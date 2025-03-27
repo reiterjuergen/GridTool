@@ -57,7 +57,7 @@ class Settings:
         
         # Recommended visualizations
         # Visualize all selected ways, hence the original dataset
-        self.plot_ways_original = False
+        self.plot_ways_original = True
 
         # Visualize all selected ways, while they are being grouped. This plot
         # includes the original and the new ways, including the threshold-circles
@@ -70,7 +70,7 @@ class Settings:
         self.histogram_distances_between_endpoints = False
 
         # Visualize Comparison between real line course and beeline
-        self.plot_comparison_real_beeline = False
+        self.plot_comparison_real_beeline = True
         
         # Optional visualizations, for debugging purposes and in-depth-research
         # Visualize length of busbars to set busbar_max_length
@@ -968,7 +968,7 @@ def my_calc_stacked_endnodes(data, distances, settings):
         y_node2_stacked = y[1, [way['node2_stacked'] for way in data]]       
       
         # Plot all nodes, highlight node1 and node2 if stacked
-        plt.figure()
+        plt.figure(figsize=(10,4.6))
         plt.title('All ways with endnodes STACKED on XY-Map')
         plt.grid(True)
         plt.xlabel('x - distance from midpoint [km]')
@@ -984,7 +984,7 @@ def my_calc_stacked_endnodes(data, distances, settings):
     
     # plot histogram how many endnodes are stacked
     if settings.histogram_stacked_endnodes:
-        plt.figure()
+        plt.figure(figsize=(10,4.6))
         plt.hist(nodes_stacked_indices_occurance + 1)
         plt.title('Stacked endnodes: If stacked, how many are stacked?')
         plt.xlabel('Nodes stacked on top of each other')
@@ -1097,7 +1097,7 @@ def my_calc_neighbouring_endnodes(data, distances, neighbourhood_threshold, sett
         y_node2_neighbour = y[:, 1][[way['node2_neighbour'] for way in data]]
         
         # Plot all nodes, highlight node1 and node2 if in neighbourhood
-        plt.figure()
+        plt.figure(figsize=(10,4.6))
         plt.title('All ways with endnodes NEIGHBOURING on XY-Map')
         plt.grid(True)
         plt.xlabel('x - distance from midpoint [km]')
@@ -1115,7 +1115,7 @@ def my_calc_neighbouring_endnodes(data, distances, neighbourhood_threshold, sett
     
     # Plot histogram of how many endnodes are in the neighbourhood
     if settings.histogram_neighbouring_endnodes:        
-        plt.figure()
+        plt.figure(figsize=(10,4.6))
         plt.hist(nodes_neighbouring_indices_occurance, bins=np.max(nodes_neighbouring_indices_occurance))
         plt.title('Neighbouring endnodes: How many will be in one group?')
         plt.xlabel('Number of nodes which will be grouped together')
@@ -1672,7 +1672,7 @@ def my_calc_real_lengths(data_ways_selected, data_ways_all, data_nodes_all, bool
         if settings.plot_comparison_real_beeline:
             print('Start plotting comparison between real line course and beeline')
             # Visualization of those lengths
-            plt.figure()
+            plt.figure(figsize=(10,4.6))
             plt.title('Comparison between real line course and beeline')
             plt.xlabel('Longitude [°]')
             plt.ylabel('Latitude [°]')
@@ -2212,6 +2212,9 @@ def my_export_excel_lego(data, export_excel_country_code, data_tags, way_length_
                 way['wires'] = 2
             if way['tags']['wires'] == 'triple':
                 way['wires'] = 3
+            if way['tags']['wires'] == 'quad':
+                way['wires'] = 4
+                
 
     # Calculate R, X, Bc and Pmax based on voltage and length
     for way in data:
@@ -2434,7 +2437,7 @@ def my_plot_ways_original(data, data_busbars, voltage_levels_selected, settings,
         lon_mean = np.mean([lon1, lon2])
 
         # Create figure for deg Plot
-        plt.figure()
+        plt.figure(figsize=(10,4.6))
         plt.title('Original ways, only selected voltages, lon/lat coordinates')
         plt.xlabel('Longitude [°]')
         plt.ylabel('Latitude [°]')
@@ -2508,7 +2511,7 @@ def my_plot_ways_original(data, data_busbars, voltage_levels_selected, settings,
         plt.close()  # Close the first plot
 
         # Create figure for X/Y km Plot
-        plt.figure()
+        plt.figure(figsize=(10,4.6))
         plt.title('Original ways, only selected voltages, x/y coordinates')
         plt.xlabel('x - distance from midpoint [km]')
         plt.ylabel('y - distance from midpoint [km]')
@@ -2623,7 +2626,7 @@ def my_plot_ways_grouping(data, data_busbars, grouped_xy_coordinates, neighbourh
         print('Start plotting all grouped endnodes... (takes a few seconds)')
         
         # Start figure
-        plt.figure()
+        plt.figure(figsize=(10,4.6))
         plt.title('Original and final ways with grouping-circles')
         plt.xlabel('x - distance from midpoint [km]')
         plt.ylabel('y - distance from midpoint [km]')
@@ -2735,7 +2738,7 @@ def my_plot_ways_final(data, voltage_levels_selected, settings):
         lon_mean = np.mean([item['lon1_final'] for item in data] + [item['lon2_final'] for item in data])
 
         # Create figure for degree (lon/lat coordinates)
-        plt.figure()
+        plt.figure(figsize=(10,4.6))
         plt.title('Final ways as exported, lon/lat coordinates')
         plt.xlabel('Longitude [°]')
         plt.ylabel('Latitude [°]')
@@ -2778,7 +2781,7 @@ def my_plot_ways_final(data, voltage_levels_selected, settings):
         plt.show()
 
         # Create figure for X/Y km coordinates
-        plt.figure()
+        plt.figure(figsize=(10,4.6))
         plt.title('Final ways as exported, x/y coordinates')
         plt.xlabel('x - distance from midpoint [km]')
         plt.ylabel('y - distance from midpoint [km]')
@@ -2830,7 +2833,7 @@ def main_program():
     
     print(f'''WELCOME to GridTool!
 (C) created by Lukas Frauenlob and Robert Gaugl, IEE, TU Graz
-    Updated by Jürgen Reiter, TU Graz
+    Updated by Juergen Reiter, TU Graz
 
 --- Info ---
    ... to restart data import, please delete variable "data_raw". 
